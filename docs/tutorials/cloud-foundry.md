@@ -10,7 +10,7 @@ nav_order: 4
 
 ## Description
 
-This document takes us through the steps that will install Move2Kube and use Move2Kube's 3 step process (collect, plan and transform) to create deployment artifacts for Cloud Foundry apps. Here, we are going to use the data from [samples/cloud-foundry](https://github.com/konveyor/move2kube-demos/tree/main/samples/cloud-foundry).
+This document takes us through the steps that will install `Move2Kube` and use Move2Kube's 3 step process (collect, plan and transform) to create deployment artifacts for Cloud Foundry apps. Here, we are going to use the data from [samples/cloud-foundry](https://github.com/konveyor/move2kube-demos/tree/main/samples/cloud-foundry).
 
 ### TLDR
 
@@ -88,7 +88,7 @@ Move2Kube will automatically analyse all the artifacts in the cloud-foundry dire
 
 Now that we have a running CF app we can transform it using Move2Kube. We will be using the three stage process (*collect*, *plan* and *transform*) for the transformation. Run these steps from the directory where `cloud-foundry` directory is present:
 
-1. Optional: This step is required only if you are interested in metadata such as environment variables from a running instance. If you don't have a running app, you can use the m2k_collect directoy that comes with the sample.
+1. **Optional**: This step is required only if you are interested in metadata such as environment variables from a running instance. If you don't have a running app, you can use the m2k_collect directoy that comes with the sample.
  We will first collect some data about your running CF application. Here we will limit the collect to only cloud foundry information using the `-a cf` annotation flag.  
 
     ```console
@@ -122,28 +122,23 @@ Now that we have a running CF app we can transform it using Move2Kube. We will b
 
     ```console
     $ move2kube plan -s cloud-foundry
-    INFO[0000] Loading Configuration                        
-    INFO[0000] [*configuration.ClusterMDLoader] Loading configuration 
-    INFO[0000] [*configuration.ClusterMDLoader] Done        
     INFO[0000] Configuration loading done                   
     INFO[0000] Planning Transformation - Base Directory     
-    INFO[0000] [DockerfileDetector] Planning transformation 
-    INFO[0000] [DockerfileDetector] Done                    
+    INFO[0000] [CloudFoundry] Planning transformation       
+    INFO[0000] Identified 1 named services and 0 to-be-named services 
+    INFO[0000] [CloudFoundry] Done                          
     INFO[0000] [ComposeAnalyser] Planning transformation    
     INFO[0000] [ComposeAnalyser] Done                       
-    INFO[0000] [ZuulAnalyser] Planning transformation       
-    INFO[0000] [ZuulAnalyser] Done                          
-    INFO[0000] [CloudFoundry] Planning transformation       
-    INFO[0000] Identified 1 namedservices and 0 unnamed transformer plans 
-    INFO[0000] [CloudFoundry] Done                          
-    INFO[0000] [Base Directory] Identified 1 namedservices and 0 unnamed transformer plans 
+    INFO[0000] [DockerfileDetector] Planning transformation 
+    INFO[0000] [DockerfileDetector] Done                    
+    INFO[0000] [Base Directory] Identified 1 named services and 0 to-be-named services 
     INFO[0000] Transformation planning - Base Directory done 
     INFO[0000] Planning Transformation - Directory Walk     
-    INFO[0000] Identified 1 namedservices and 0 unnamed transformer plans in . 
+    INFO[0000] Identified 1 named services and 0 to-be-named services in cfnodejsapp 
     INFO[0000] Transformation planning - Directory Walk done 
-    INFO[0000] [Directory Walk] Identified 1 namedservices and 0 unnamed transformer plans 
-    INFO[0000] [Named Services] Identified 1 namedservices  
-    INFO[0000] No of services identified : 1                
+    INFO[0000] [Directory Walk] Identified 1 named services and 0 to-be-named services 
+    INFO[0000] [Named Services] Identified 1 named services 
+    INFO[0000] No of services identified : 1               
     INFO[0000] Plan can be found at [/Users/username/m2k.plan].
     ```
 
@@ -236,56 +231,58 @@ Now that we have a running CF app we can transform it using Move2Kube. We will b
     ```console
     $ move2kube transform
     INFO[0000] Detected a plan file at path /Users/username/m2k.plan. Will transform using this plan. 
+    INFO[0000] Starting Plan Transformation                 
     ? Select all transformer types that you are interested in:
+    ID: move2kube.transformers.types
     Hints:
     [Services that don't support any of the transformer types you are interested in will be ignored.]
-        [Use arrows to move, space to select, <right> to all, <left> to none, type to filter]
-      > [✓]  Jboss
-        [✓]  Kubernetes
-        [✓]  Liberty
-        [✓]  ZuulAnalyser
+      [Use arrows to move, space to select, <right> to all, <left> to none, type to filter]
+      > [✓]  Buildconfig
         [✓]  CloudFoundry
-        [✓]  DockerfileParser
-        [✓]  Golang-Dockerfile
-        [✓]  Gradle
-        [✓]  Python-Dockerfile
-        [✓]  ReadMeGenerator
-        [✓]  ContainerImagesPushScriptGenerator
-        [✓]  DotNetCore-Dockerfile
-        [✓]  Parameterizer
-        [✓]  Tekton
-        [✓]  WinSLWebApp-Dockerfile
-        [✓]  Buildconfig
         [✓]  ClusterSelector
         [✓]  ComposeAnalyser
-        [✓]  PHP-Dockerfile
-        [✓]  Ruby-Dockerfile
-        [✓]  WinConsoleApp-Dockerfile
-        [✓]  DockerfileImageBuildScript
+        [✓]  ComposeGenerator
+        [✓]  ContainerImagesPushScriptGenerator
+        [✓]  DockerfileDetector
+        [✓]  DockerfileParser
+        [✓]  DotNetCore-Dockerfile
+        [✓]  EarAnalyser
         [✓]  EarRouter
+        [✓]  Golang-Dockerfile
+        [✓]  Gradle
+        [✓]  Jar
+        [✓]  Jboss
+        [✓]  Knative
+        [✓]  Kubernetes
+        [✓]  KubernetesVersionChanger
+        [✓]  Liberty
+        [✓]  Maven
+        [✓]  Nodejs-Dockerfile
+        [✓]  PHP-Dockerfile
+        [✓]  Parameterizer
+        [✓]  Python-Dockerfile
+        [✓]  ReadMeGenerator
+        [✓]  Ruby-Dockerfile
         [✓]  Rust-Dockerfile
+        [✓]  Tekton
         [✓]  Tomcat
         [✓]  WarAnalyser
-        [✓]  EarAnalyser
-        [✓]  Knative
-        [✓]  Maven
-        [✓]  WinWebApp-Dockerfile
-        [✓]  ComposeGenerator
-        [✓]  Jar
-        [✓]  DockerfileDetector
-        [✓]  KubernetesVersionChanger
-        [✓]  Nodejs-Dockerfile
         [✓]  WarRouter
+        [✓]  WinConsoleApp-Dockerfile
+        [✓]  WinSLWebApp-Dockerfile
+        [✓]  WinWebApp-Dockerfile
+        [✓]  ZuulAnalyser
     ```
 
     * Let's go ahead with the default answer by pressing `return` or `enter` key.
 
     ```console
-    Jboss, Kubernetes, Liberty, ZuulAnalyser, CloudFoundry, DockerfileParser, Golang-Dockerfile, Gradle, Python-Dockerfile, ReadMeGenerator, ContainerImagesPushScriptGenerator, DotNetCore-Dockerfile, Parameterizer, Tekton, WinSLWebApp-Dockerfile, Buildconfig, ClusterSelector, ComposeAnalyser, PHP-Dockerfile, Ruby-Dockerfile, WinConsoleApp-Dockerfile, DockerfileImageBuildScript, EarRouter, Rust-Dockerfile, Tomcat, WarAnalyser, EarAnalyser, Knative, Maven, WinWebApp-Dockerfile, ComposeGenerator, Jar, DockerfileDetector, KubernetesVersionChanger, Nodejs-Dockerfile, WarRouter
+    Buildconfig, CloudFoundry, ClusterSelector, ComposeAnalyser, ComposeGenerator, ContainerImagesPushScriptGenerator, DockerfileDetector, DockerfileImageBuildScript, DockerfileParser, DotNetCore-Dockerfile, EarAnalyser, EarRouter, Golang-Dockerfile, Gradle, Jar, Jboss, Knative, Kubernetes, KubernetesVersionChanger, Liberty, Maven, Nodejs-Dockerfile, PHP-Dockerfile, Parameterizer, Python-Dockerfile, ReadMeGenerator, Ruby-Dockerfile, Rust-Dockerfile, Tekton, Tomcat, WarAnalyser, WarRouter, WinConsoleApp-Dockerfile, WinSLWebApp-Dockerfile, WinWebApp-Dockerfile, ZuulAnalyser
     ? Select all services that are needed:
+    ID: move2kube.services.[].enable
     Hints:
     [The services unselected here will be ignored.]
-    [Use arrows to move, space to select, <right> to all, <left> to none, type to filter]
+      [Use arrows to move, space to select, <right> to all, <left> to none, type to filter]
     > [✓]  cfnodejsapp
     ```
 
@@ -293,54 +290,95 @@ Now that we have a running CF app we can transform it using Move2Kube. We will b
 
     ```console
      cfnodejsapp
-    INFO[0275] Starting Plan Transformation                 
-    INFO[0275] Iteration 1                                  
-    INFO[0275] Iteration 2 - 1 artifacts to process         
-    INFO[0275] Transformer CloudFoundry processing 1 artifacts 
-    INFO[0275] Transformer ZuulAnalyser processing 2 artifacts 
-    INFO[0275] Transformer ZuulAnalyser Done                
-    INFO[0275] Transformer CloudFoundry Done                
-    INFO[0275] Created 0 pathMappings and 3 artifacts. Total Path Mappings : 0. Total Artifacts : 1. 
-    INFO[0275] Iteration 3 - 3 artifacts to process         
-    INFO[0275] Transformer ClusterSelector processing 2 artifacts 
+    INFO[0555] Iteration 1                                  
+    INFO[0555] Iteration 2 - 1 artifacts to process         
+    INFO[0555] Transformer CloudFoundry processing 1 artifacts 
+    INFO[0555] Transformer CloudFoundry Done                
+    INFO[0555] Created 0 pathMappings and 1 artifacts. Total Path Mappings : 0. Total Artifacts : 1. 
+    INFO[0555] Iteration 3 - 1 artifacts to process         
+    INFO[0555] Transformer Nodejs-Dockerfile processing 1 artifacts 
+    ? Select port to be exposed for the service cfnodejsapp :
+    ID: move2kube.services.cfnodejsapp.port
+    Hints:
+    [Select Other if you want to expose the service cfnodejsapp to some other port]
+      [Use arrows to move, type to filter]
+    > 8080
+      Other (specify custom option)
+    ```
 
+    * Select the port on which you want to expose the `cfnodejsapp` service.
+
+    ```console
+     8080
+    INFO[0675] Transformer Nodejs-Dockerfile Done           
+    INFO[0675] Created 2 pathMappings and 2 artifacts. Total Path Mappings : 2. Total Artifacts : 2. 
+    INFO[0675] Iteration 4 - 2 artifacts to process         
+    INFO[0675] Transformer DockerfileImageBuildScript processing 2 artifacts 
+    ? Select the container runtime to use :
+    ID: move2kube.containerruntime
+    Hints:
+    [The container runtime selected will be used in the scripts]
+      [Use arrows to move, type to filter]
+    > docker
+      podman
+    ```
+
+    * Select the container runtime you want to use.
+
+    ```console
+     docker
+    INFO[0744] Transformer DockerfileImageBuildScript Done  
+    INFO[0744] Transformer DockerfileParser processing 1 artifacts 
+    INFO[0744] Transformer ZuulAnalyser processing 2 artifacts 
+    INFO[0744] Transformer ZuulAnalyser Done                
+    INFO[0744] Transformer DockerfileParser Done            
+    INFO[0744] Created 1 pathMappings and 4 artifacts. Total Path Mappings : 3. Total Artifacts : 4. 
+    INFO[0744] Iteration 5 - 4 artifacts to process         
+    INFO[0744] Transformer ClusterSelector processing 2 artifacts 
     ? Choose the cluster type:
+    ID: move2kube.target.clustertype
     Hints:
     [Choose the cluster type you would like to target]
       [Use arrows to move, type to filter]
-    > Kubernetes
-      Openshift
+    > Openshift
       AWS-EKS
       Azure-AKS
       GCP-GKE
       IBM-IKS
       IBM-Openshift
+      Kubernetes
     ```
 
-    * Now, it asks to select the cluster type you want to deploy to. Here, we select the `Kubernetes` cluster type.
+    * Now, it asks to select the cluster type you want to deploy to. Here, we select the `Openshift` cluster type.
 
     ```console
-    Kubernetes
-    INFO[0351] Transformer ClusterSelector Done             
-    INFO[0351] Transformer Kubernetes processing 2 artifacts 
-
-    ? What URL/path should we expose the service cfnodejsapp's 8080 port on?
+     Openshift
+    INFO[0842] Transformer ClusterSelector Done             
+    INFO[0842] Transformer Buildconfig processing 2 artifacts 
+    ? What kind of service/ingress to create for cfnodejsapp's 8080 port?
+    ID: move2kube.services."cfnodejsapp"."8080".servicetype
     Hints:
-    [Enter :- not expose the service, Leave out leading / to use first part as subdomain, Add :N as suffix for NodePort service type, Add :L for Load Balancer service type]
-     (/cfnodejsapp)
+    [Choose Ingress if you want a ingress/route resource to be created]
+      [Use arrows to move, type to filter]
+      Ingress
+      LoadBalancer
+      NodePort
+    > ClusterIP
+      Don't create service
     ```
 
-    * Let's go ahead with the default answer by pressing `return` or `enter` key.
+    * Select the `ClusterIP` to create a service in OpenShift cluster.
 
     ```console
-    /cfnodejsapp
+     ClusterIP
     ? Provide the minimum number of replicas each service should have
+    ID: move2kube.minreplicas
     Hints:
     [If the value is 0 pods won't be started by default]
-      (2)
+    (2)
     ```
 
-    * Let's go ahead with the default answer again, which means 2 replicas for each service.
+    * Let's go ahead with the default answer again, which means `2` replicas for each service.
 
     ```console
     2
@@ -357,182 +395,73 @@ Now that we have a running CF app we can transform it using Move2Kube. We will b
     * Then it asks to select the registry where your images are hosted. Here, we are selecting `quay.io`. Select 'Other' if your registry name is not here.
 
     ```console
-    quay.io
-    ? Enter the namespace where the new images should be pushed :  
+     quay.io
+    ? Enter the namespace where the new images should be pushed : 
+    ID: move2kube.target.imageregistry.namespace
     Hints:
-     [Ex : myproject]
-     (myproject) m2k-tutorial
+    [Ex : myproject]
+    (myproject) username
     ```
 
-    * Input the namespace under which you want to deploy- m2k-tutorial. (Say, you have namespace `m2k-tutorial` in quay.io)
+    * Input the username or org. that you want to push an image. For example, if you enter **danieloh30** as the username, the image path will be **quay.io/danieloh30/cfnodejsapp**.
 
     ```console
-    m2k-tutorial
+     danieloh30
     ? [quay.io] What type of container registry login do you want to use?
+    ID: move2kube.target.imageregistry.logintype
     Hints:
-     [Docker login from config mode, will use the default config from your local machine.]
+    [Docker login from config mode, will use the default config from your local machine.]
       [Use arrows to move, type to filter]
       Use existing pull secret
     > No authentication
-      UserName/Password
+      UserName/Password                 
     ```
 
-    * Select the container registry login type.
+    * Select `No authentication` for the container registry login type.
 
     ```console
-    No authentication
-    INFO[0841] Optimization done                            
-    INFO[0841] Begin Optimization                           
-    INFO[0841] Optimization done                            
-    INFO[0841] Created 2 pathMappings and 2 artifacts. Total Path Mappings : 2. Total Artifacts : 3. 
-    INFO[0841] Transformer Knative Done                     
-    INFO[0841] Transformer Tekton processing 2 artifacts    
-    INFO[0841] Begin Optimization                           
-    INFO[0841] Optimization done                            
-    INFO[0841] Generating Tekton pipeline for CI/CD         
-    INFO[0841] No remote git repos detected. You might want to configure the git repository links manually.
+     No authentication
+    INFO[2439] Generating Buildconfig pipeline for CI/CD    
+    INFO[2439] Generating Buildconfig pipeline for CI/CD    
+    INFO[2439] Transformer Buildconfig Done                 
+    INFO[2439] Transformer ComposeGenerator processing 2 artifacts 
+    INFO[2439] Transformer ComposeGenerator Done            
+    INFO[2439] Transformer ContainerImagesPushScriptGenerator processing 2 artifacts 
+    INFO[2439] Transformer ContainerImagesPushScriptGenerator Done 
+    INFO[2439] Transformer ClusterSelector processing 2 artifacts 
+    INFO[2439] Transformer ClusterSelector Done             
+    INFO[2439] Transformer Knative processing 2 artifacts   
+    INFO[2439] Transformer Knative Done                     
+    INFO[2439] Transformer ClusterSelector processing 2 artifacts 
+    INFO[2439] Transformer ClusterSelector Done             
+    INFO[2439] Transformer Kubernetes processing 2 artifacts 
+    INFO[2439] Transformer Kubernetes Done                  
+    INFO[2439] Transformer ClusterSelector processing 2 artifacts 
+    INFO[2439] Transformer ClusterSelector Done             
+    INFO[2439] Transformer Tekton processing 2 artifacts    
     ? Provide the ingress host domain
+    ID: move2kube.target.ingress.host
     Hints:
-     [Ingress host domain is part of service URL]
-     (myproject.com) my-cluster-ingress-host-domain.com
+    [Ingress host domain is part of service URL]
+    (myproject.com)
     ```
 
-    * It is now asking for the ingress hosting domain. It can be grabbed from the cluster you are going to deploy to. The ingress hosting domain will differ based on the cluster you are fetching from.
+    * It is now asking for the ingress hosting domain. It can be grabbed from the cluster you are going to deploy to. However, you don't need to use the Ingress because the OpenShift cluster allows you to create a `Route` to access the application based on FQDN domain. Go ahead with the default answer by pressing `return` or `enter` key.
 
     ```console
-    ? Provide the TLS secret for ingress
+    ID: move2kube.target.ingress.host
     Hints:
-     [Leave empty to use http]
-
-    ```
-
-    * Then it asks information about your TLS secret. Here we go with the by-default by pressing the 'return' key.
-
-    ```console
-
-    INFO[1094] Begin Optimization                           
-    INFO[1094] Optimization done                            
-    INFO[1094] Generating Tekton pipeline for CI/CD         
-    INFO[1094] No remote git repos detected. You might want to configure the git repository links manually. 
-    INFO[1094] Created 20 pathMappings and 2 artifacts. Total Path Mappings : 22. Total Artifacts : 3. 
-    INFO[1094] Transformer Tekton Done                      
-    INFO[1094] Transformer Buildconfig processing 2 artifacts 
-    INFO[1094] Begin Optimization                           
-    INFO[1094] Optimization done                            
-    INFO[1094] Created 0 pathMappings and 0 artifacts. Total Path Mappings : 22. Total Artifacts : 3. 
-    INFO[1094] Transformer Buildconfig Done                 
-    INFO[1094] Transformer ComposeGenerator processing 2 artifacts 
-    INFO[1094] Begin Optimization                           
-    INFO[1094] Optimization done                            
-    INFO[1094] Begin Optimization                           
-    INFO[1094] Optimization done                            
-    INFO[1094] Created 2 pathMappings and 0 artifacts. Total Path Mappings : 24. Total Artifacts : 3. 
-    INFO[1094] Transformer ComposeGenerator Done            
-    INFO[1094] Transformer Kubernetes processing 2 artifacts 
-    INFO[1094] Begin Optimization                           
-    INFO[1094] Optimization done                            
-    INFO[1094] Total transformed objects : 3                
-    INFO[1094] Begin Optimization                           
-    INFO[1094] Optimization done                            
-    INFO[1094] Total transformed objects : 3                
-    INFO[1094] Created 2 pathMappings and 2 artifacts. Total Path Mappings : 26. Total Artifacts : 3. 
-    INFO[1094] Transformer Kubernetes Done                  
-    INFO[1094] Transformer Nodejs-Dockerfile processing 1 artifacts
-    ? Select port to be exposed for the service cfnodejsapp :
-    Hints:
-    [Select Other if you want to expose the service cfnodejsapp to some other port]
-      [Use arrows to move, type to filter]
-    > 8080
-      Other (specify custom option)
-    ```
-
-    * Select the port on which you want to expose the `cfnodejsapp` service.
-
-    ```console
-    8080
-    INFO[1184] Created 2 pathMappings and 2 artifacts. Total Path Mappings : 28. Total Artifacts : 3. 
-    INFO[1184] Transformer Nodejs-Dockerfile Done           
-    INFO[1184] Iteration 4                                  
-    INFO[1184] Transformer ReadMeGenerator processing 4 artifacts 
-    INFO[1184] Created 1 pathMappings and 0 artifacts. Total Path Mappings : 29. Total Artifacts : 11. 
-    INFO[1184] Transformer ReadMeGenerator Done             
-    INFO[1184] Transformer DockerfileImageBuildScript processing 2 artifacts 
-
-    ? Select the container runtime to use :
-    Hints:
-    [The container runtime selected will be used in the scripts]
-      [Use arrows to move, type to filter]
-    > docker
-      podman
-    ```
-
-    * Select the container runtime you want to use.
-
-    ```console
-     docker
-    INFO[1184] Created 1 pathMappings and 2 artifacts. Total Path Mappings : 30. Total Artifacts : 11. 
-    INFO[1184] Transformer DockerfileImageBuildScript Done  
-    INFO[1184] Transformer DockerfileParser processing 1 artifacts 
-    INFO[1184] Created 0 pathMappings and 1 artifacts. Total Path Mappings : 30. Total Artifacts : 11. 
-    INFO[1184] Transformer DockerfileParser Done            
-    INFO[1184] Transformer Parameterizer processing 4 artifacts 
-    INFO[1184] Created 12 pathMappings and 0 artifacts. Total Path Mappings : 42. Total Artifacts : 11. 
-    INFO[1184] Transformer Parameterizer Done               
-    INFO[1184] Iteration 5                                  
-    INFO[1184] Transformer Tekton processing 2 artifacts    
-    INFO[1184] Begin Optimization                           
-    INFO[1184] Optimization done                            
-    INFO[1184] Generating Tekton pipeline for CI/CD         
-    INFO[1184] No remote git repos detected. You might want to configure the git repository links manually. 
-    INFO[1184] Begin Optimization                           
-    INFO[1184] Optimization done                            
-    INFO[1184] Generating Tekton pipeline for CI/CD         
-    INFO[1184] No remote git repos detected. You might want to configure the git repository links manually. 
-    INFO[1184] Created 20 pathMappings and 2 artifacts. Total Path Mappings : 62. Total Artifacts : 14. 
-    INFO[1184] Transformer Tekton Done                      
-    INFO[1184] Transformer Buildconfig processing 2 artifacts 
-    INFO[1184] Begin Optimization                           
-    INFO[1185] Optimization done                            
-    INFO[1185] Created 0 pathMappings and 0 artifacts. Total Path Mappings : 62. Total Artifacts : 14. 
-    INFO[1185] Transformer Buildconfig Done                 
-    INFO[1185] Transformer ComposeGenerator processing 2 artifacts 
-    INFO[1185] Begin Optimization                           
-    INFO[1185] Optimization done                            
-    INFO[1185] Begin Optimization                           
-    INFO[1185] Optimization done                            
-    INFO[1185] Created 2 pathMappings and 0 artifacts. Total Path Mappings : 64. Total Artifacts : 14. 
-    INFO[1185] Transformer ComposeGenerator Done            
-    INFO[1185] Transformer ContainerImagesPushScriptGenerator processing 2 artifacts 
-    INFO[1185] Created 1 pathMappings and 1 artifacts. Total Path Mappings : 65. Total Artifacts : 14. 
-    INFO[1185] Transformer ContainerImagesPushScriptGenerator Done 
-    INFO[1185] Transformer Kubernetes processing 2 artifacts 
-    INFO[1185] Begin Optimization                           
-    INFO[1185] Optimization done                            
-    INFO[1185] Total transformed objects : 3                
-    INFO[1185] Begin Optimization                           
-    INFO[1185] Optimization done                            
-    INFO[1185] Total transformed objects : 3                
-    INFO[1185] Created 2 pathMappings and 2 artifacts. Total Path Mappings : 67. Total Artifacts : 14. 
-    INFO[1185] Transformer Kubernetes Done                  
-    INFO[1185] Transformer ContainerImagesBuildScriptGenerator processing 2 artifacts 
-    INFO[1185] Created 2 pathMappings and 1 artifacts. Total Path Mappings : 69. Total Artifacts : 14. 
-    INFO[1185] Transformer ContainerImagesBuildScriptGenerator Done 
-    INFO[1185] Transformer Knative processing 2 artifacts   
-    INFO[1185] Begin Optimization                           
-    INFO[1185] Optimization done                            
-    INFO[1185] Begin Optimization                           
-    INFO[1185] Optimization done                            
-    INFO[1185] Created 2 pathMappings and 2 artifacts. Total Path Mappings : 71. Total Artifacts : 14. 
-    INFO[1185] Transformer Knative Done                     
-    INFO[1185] Iteration 6                                  
-    INFO[1185] Transformer Parameterizer processing 4 artifacts 
-    INFO[1185] Created 12 pathMappings and 0 artifacts. Total Path Mappings : 83. Total Artifacts : 22. 
-    INFO[1185] Transformer Parameterizer Done               
-    INFO[1185] Transformer ReadMeGenerator processing 6 artifacts 
-    INFO[1185] Created 1 pathMappings and 0 artifacts. Total Path Mappings : 84. Total Artifacts : 22. 
-    INFO[1185] Transformer ReadMeGenerator Done             
-    INFO[1185] Plan Transformation done                     
-    INFO[1185] Transformed target artifacts can be found at [/Users/username/github/move2kube-demos/samples/myproject].
+    [Ingress host domain is part of service URL]
+    myproject.com
+    INFO[2780] Transformer Tekton Done                      
+    INFO[2780] Created 35 pathMappings and 9 artifacts. Total Path Mappings : 38. Total Artifacts : 8. 
+    INFO[2780] Iteration 6 - 9 artifacts to process         
+    INFO[2780] Transformer Parameterizer processing 5 artifacts 
+    INFO[2780] Transformer Parameterizer Done               
+    INFO[2780] Transformer ReadMeGenerator processing 6 artifacts 
+    INFO[2780] Transformer ReadMeGenerator Done             
+    INFO[2780] Plan Transformation done                     
+    INFO[2780] Transformed target artifacts can be found at [/Users/username/myproject].
     ```
 
 Finally, the transformation is successful and the target artifacts can be found inside the `./myproject` directory. The structure of the *./myproject* directory can be seen by executing the below command.
@@ -548,18 +477,38 @@ $  tree myproject
 
 ```console
 $  tree myproject
-myproject/
+myproject
 ├── Readme.md
 ├── deploy
 │   ├── cicd
+│   │   ├── buildconfig
+│   │   │   ├── myproject-clone-build-push-cfnodejsapp-buildconfig.yaml
+│   │   │   ├── myproject-git-repo-generic-secret.yaml
+│   │   │   └── myproject-web-hook-cfnodejsapp-secret.yaml
+│   │   ├── buildconfig-parameterized
+│   │   │   ├── helm-chart
+│   │   │   │   └── myproject
+│   │   │   │       ├── Chart.yaml
+│   │   │   │       └── templates
+│   │   │   │           ├── myproject-clone-build-push-cfnodejsapp-buildconfig.yaml
+│   │   │   │           ├── myproject-git-repo-generic-secret.yaml
+│   │   │   │           └── myproject-web-hook-cfnodejsapp-secret.yaml
+│   │   │   ├── kustomize
+│   │   │   │   └── base
+│   │   │   │       ├── kustomization.yaml
+│   │   │   │       ├── myproject-clone-build-push-cfnodejsapp-buildconfig.yaml
+│   │   │   │       ├── myproject-git-repo-generic-secret.yaml
+│   │   │   │       └── myproject-web-hook-cfnodejsapp-secret.yaml
+│   │   │   └── openshift-template
+│   │   │       └── template.yaml
 │   │   ├── tekton
 │   │   │   ├── cfnodejsapp-vcapasenv-secret.yaml
 │   │   │   ├── myproject-clone-build-push-pipeline.yaml
 │   │   │   ├── myproject-clone-push-serviceaccount.yaml
 │   │   │   ├── myproject-git-event-triggerbinding.yaml
 │   │   │   ├── myproject-git-repo-eventlistener.yaml
+│   │   │   ├── myproject-git-repo-route.yaml
 │   │   │   ├── myproject-image-registry-secret.yaml
-│   │   │   ├── myproject-ingress.yaml
 │   │   │   ├── myproject-run-clone-build-push-triggertemplate.yaml
 │   │   │   ├── myproject-tekton-triggers-admin-role.yaml
 │   │   │   ├── myproject-tekton-triggers-admin-rolebinding.yaml
@@ -574,8 +523,8 @@ myproject/
 │   │       │           ├── myproject-clone-push-serviceaccount.yaml
 │   │       │           ├── myproject-git-event-triggerbinding.yaml
 │   │       │           ├── myproject-git-repo-eventlistener.yaml
+│   │       │           ├── myproject-git-repo-route.yaml
 │   │       │           ├── myproject-image-registry-secret.yaml
-│   │       │           ├── myproject-ingress.yaml
 │   │       │           ├── myproject-run-clone-build-push-triggertemplate.yaml
 │   │       │           ├── myproject-tekton-triggers-admin-role.yaml
 │   │       │           ├── myproject-tekton-triggers-admin-rolebinding.yaml
@@ -588,8 +537,8 @@ myproject/
 │   │       │       ├── myproject-clone-push-serviceaccount.yaml
 │   │       │       ├── myproject-git-event-triggerbinding.yaml
 │   │       │       ├── myproject-git-repo-eventlistener.yaml
+│   │       │       ├── myproject-git-repo-route.yaml
 │   │       │       ├── myproject-image-registry-secret.yaml
-│   │       │       ├── myproject-ingress.yaml
 │   │       │       ├── myproject-run-clone-build-push-triggertemplate.yaml
 │   │       │       ├── myproject-tekton-triggers-admin-role.yaml
 │   │       │       ├── myproject-tekton-triggers-admin-rolebinding.yaml
@@ -614,28 +563,28 @@ myproject/
 │   │       └── template.yaml
 │   ├── yamls
 │   │   ├── cfnodejsapp-deployment.yaml
+│   │   ├── cfnodejsapp-latest-imagestream.yaml
 │   │   ├── cfnodejsapp-service.yaml
-│   │   ├── cfnodejsapp-vcapasenv-secret.yaml
-│   │   └── myproject-ingress.yaml
+│   │   └── cfnodejsapp-vcapasenv-secret.yaml
 │   └── yamls-parameterized
 │       ├── helm-chart
 │       │   └── myproject
 │       │       ├── Chart.yaml
 │       │       ├── templates
 │       │       │   ├── cfnodejsapp-deployment.yaml
+│       │       │   ├── cfnodejsapp-latest-imagestream.yaml
 │       │       │   ├── cfnodejsapp-service.yaml
-│       │       │   ├── cfnodejsapp-vcapasenv-secret.yaml
-│       │       │   └── myproject-ingress.yaml
+│       │       │   └── cfnodejsapp-vcapasenv-secret.yaml
 │       │       ├── values-dev.yaml
 │       │       ├── values-prod.yaml
 │       │       └── values-staging.yaml
 │       ├── kustomize
 │       │   ├── base
 │       │   │   ├── cfnodejsapp-deployment.yaml
+│       │   │   ├── cfnodejsapp-latest-imagestream.yaml
 │       │   │   ├── cfnodejsapp-service.yaml
 │       │   │   ├── cfnodejsapp-vcapasenv-secret.yaml
-│       │   │   ├── kustomization.yaml
-│       │   │   └── myproject-ingress.yaml
+│       │   │   └── kustomization.yaml
 │       │   └── overlays
 │       │       ├── dev
 │       │       │   ├── apps-v1-deployment-cfnodejsapp.yaml
@@ -666,6 +615,8 @@ myproject/
     └── m2k_collect
         └── cf
             └── cfapps.yaml
+
+44 directories, 93 files
 ```
 </details>
 
@@ -682,7 +633,6 @@ So, Move2Kube has created all the deployment artifacts which are present inside 
      Readme.md deploy    scripts   source
      ```
 
-
 2. Next we run the *builddockerimages.sh* script inside the `./myproject/scripts` directory. This step may take some time to complete.
 
     ```console
@@ -691,75 +641,129 @@ So, Move2Kube has created all the deployment artifacts which are present inside 
 
     ```console
     $ ./builddockerimages.sh
-    [+] Building 7.1s (8/8) FINISHED                             
-    => [internal] load build definition from Dockerfile    0.1s
-    => => transferring dockerfile: 37B                     0.0s
-    => [internal] load .dockerignore                       0.0s
-    => => transferring context: 2B                         0.0s
-    => [internal] load metadata for registry.access.redha  2.7s
-    => [internal] load build context                       0.0s
-    => => transferring context: 354B                       0.0s
-    => CACHED [1/3] FROM registry.access.redhat.com/ubi8/  0.0s
-    => [2/3] COPY . .                                      0.1s
-    => [3/3] RUN npm install                               4.0s
-    => exporting to image                                  0.1s
-    => => exporting layers                                 0.0s
-    => => writing image sha256:7bd59bff8763073644bd68cd3f  0.0s
-    => => naming to docker.io/library/cfnodejsapp          0.0s
-    /Users/username/github/move2kube-demos/samples/myproject
+    [+] Building 1.9s (8/8) FINISHED                                                                                                                       
+    => [internal] load build definition from Dockerfile                                                                                              0.1s
+    => => transferring dockerfile: 747B                                                                                                              0.0s
+    => [internal] load .dockerignore                                                                                                                 0.0s
+    => => transferring context: 2B                                                                                                                   0.0s
+    => [internal] load metadata for registry.access.redhat.com/ubi8/nodejs-12:latest                                                                 1.7s
+    => [internal] load build context                                                                                                                 0.0s
+    => => transferring context: 868B                                                                                                                 0.0s
+    => [1/3] FROM registry.access.redhat.com/ubi8/nodejs-12@sha256:1208ace959a40906e0e0e753b5ed5621c052a5a115e333d70ca8fa5e5c0dc0ca                  0.0s
+    => CACHED [2/3] COPY . .                                                                                                                         0.0s
+    => CACHED [3/3] RUN npm install                                                                                                                  0.0s
+    => exporting to image                                                                                                                            0.0s
+    => => exporting layers                                                                                                                           0.0s
+    => => writing image sha256:2d560a9a7b40f2d29447b57b619d55a5dd103ae5dd626cd517791f4ae8e61cbb                                                      0.0s
+    => => naming to docker.io/library/cfnodejsapp                                                                                                    0.0s
+    /Users/username/myproject
     done
     ```
-
 
 3. Now using the *pushimages.sh* script we can push our applications images to the registry that we specified during the *transform* phase. For this step, you are required to log in to your Docker registry. To log in to `quay.io` run `docker login quay.io`. To log in to IBM Cloud `us.icr.io` registry refer [here](https://cloud.ibm.com/docs/Registry?topic=Registry-registry_access#registry_access_apikey_auth_docker).
 
     ```console
     $ ./pushimages.sh
     Using default tag: latest
-    The push refers to repository [quay.io/m2k-tutorial/cfnodejsapp]
-    d98785f949ff: Layer already exists 
-    2234a0b938d7: Layer already exists 
-    967d006c4be4: Layer already exists 
-    90c628b74ee4: Layer already exists 
-    e7f8a4365a01: Layer already exists 
-    a7be0896acef: Layer already exists 
-    73eb3b4bebc5: Layer already exists 
-    latest: digest: sha256:75283b09042b1454567b5e99d6d99374daad07fe46ee6843ace7dca29f085fd7 size: 1789
+    The push refers to repository [quay.io/danieloh30/cfnodejsapp]
+    44682b6a7ca8: Layer already exists 
+    4d994360499e: Layer already exists 
+    31226b9a7823: Layer already exists 
+    718375ad3f65: Layer already exists 
+    e0b9a99c51af: Layer already exists 
+    ef5d9ad2a541: Layer already exists 
+    93749af418e7: Layer already exists 
+    latest: digest: sha256:197c820069a3691c727db3ccf0d544601035fdca6dba7b96bae16463068a5307 size: 1789
     ```
 
     NOTE: If you have pushed the image repository to `quay.io`, then in the Repository's Visibility in [quay.io](https://quay.io) `cfnodejsapp` repository's Settings, select whether you want the repository `cfnodejsapp` to be public or private so that it can be properly accessed by the Kubernetes cluster.
 
+4. Finally we are going to deploy the application with *oc apply* command using the yaml files which Move2Kube has created for us inside the `./myproject/deploy/yamls` directory.
 
-4. Finally we are going to deploy the application with *kubectl apply* command using the yaml files which Move2Kube has created for us inside the `./myproject/deploy/yamls` directory.
+    You'll use [Developer Sandbox for Red Hat OpenShift](https://developers.redhat.com/developer-sandbox), a shared multi-tenant OpenShift cluster that is pre-configured with a set of developer tools. To access the sandbox, visit [Get started in the Sandbox](https://developers.redhat.com/developer-sandbox/get-started) then sign it up for free. 
+
+    You'll use `oc` command line tool over `kubectl` to create Kubernetes resources in the OpenShift cluster. If you haven't already installed the oc command line tool, read the article,[Where can I download the OpenShift command line tool?](https://developers.redhat.com/openshift/command-line-tools).
+
+    Before you deploy the application, you need to log in to the OpenShift cluster on the sandbox. You can copy the `oc` login command with a valid token by the following screen flow:
+
+    ![devsandbox](../../assets/images/samples/dev-sandbox/oclogin.png)
+
+    When you paste the oc login command on your local terminal, the output should looke like:
+ 
+    ```console
+    $ oc login --token=sha256~_4yyHH7hAANsx7BchfB4xkclvdmWUAdt-efqZt0MVOQ --server=https://api.sandbox.x8i5.p1.openshiftapps.com:6443
+
+    Logged into "https://api.sandbox.x8i5.p1.openshiftapps.com:6443" as "USERNAME" using the token provided.
+
+    You have access to the following projects and can switch between them with 'oc project <projectname>':
+
+      * USERNAME-dev
+        USERNAME-stage
+
+    Using project "doh-dev".
+    ```
+
+    **USERNAME** should be replaced with your own account. Be sure to log in to `USERNAME-dev` project.
+
+
 
     ```console
     $ cd ..
 
-    $ kubectl apply -f deploy/yamls
+    $ oc apply -f deploy/yamls
     deployment.apps/cfnodejsapp created
+    imagestream.image.openshift.io/cfnodejsapp-latest created
     service/cfnodejsapp created
-    ingress.networking.k8s.io/myproject created
+    secret/cfnodejsapp-vcapasenv configured
     ```
 
     Now our application is accessible on the cluster. You can check the status of pods by running the command mentioned below.
 
     ```console
-    $ kubectl get pods
+    $ oc get pods
 
     NAME                           READY   STATUS    RESTARTS   AGE
-    cfnodejsapp-58d777bd44-8ct2m   1/1     Running   0          7s
-    cfnodejsapp-58d777bd44-hq6lf   1/1     Running   0          7s
+    cfnodejsapp-7f9ccb98d7-b97xn   1/1     Running   0          7s
+    cfnodejsapp-7f9ccb98d7-zhdnh   1/1     Running   0          7s
     ```
 
-    We can get the ingress to see the URL where the app has been deployed to.
+    Create a `Route` to access the application by the FQDN URL.
 
     ```console
-    $ kubectl get ingress myproject
+    $ oc expose svc/cfnodejsapp
+    route.route.openshift.io/cfnodejsapp exposed
     ```
 
-    cfnodejsapp
-    ![cfnodejsapp](../../assets/images/samples/cloud-foundry/cloud-foundry-app.png)
+    You can get the route URL using the following oc command.
+
+    ```console
+    $ oc get route
+    NAME          HOST/PORT                                                    PATH   SERVICES      PORT        TERMINATION   WILDCARD
+    cfnodejsapp   cfnodejsapp-doh-dev.apps.sandbox.x8i5.p1.openshiftapps.com          cfnodejsapp   port-8080                 None
+    ```
+
+    Access the application using the `curl` command line tool.
+
+    ```console
+    $ curl cfnodejsapp-doh-dev.apps.sandbox.x8i5.p1.openshiftapps.com
+    <h1>This is a node server</h1>
+    ```
+
+    You can also find out if the application is deployed well in Topology view on the OpenShift cluster. Let's add a NodeJs label to the application pod using the following `oc` command:
+
+    ```console
+    $ oc label deployment/cfnodejsapp app.openshift.io/runtime=nodejs --overwrite 
+    deployment.apps/cfnodejsapp labeled
+    ```
+
+    Go to the OpenShift web console. Then, navigate to the `Topology` view in _Develop perspective_. You will see the `NodeJs` icon as below. 
+
+    ![devsandbox](../../assets/images/samples/dev-sandbox/topology.png)
+
+    Click on `Open URL` icon. You will see the application page as below.
+
+    ![devsandbox](../../assets/images/samples/dev-sandbox/route.png)
 
 ## Conclusion
 
-So, that is a simple way where you were able to combine multiple information like runtime information, source information and cluster information, and do a holistic transformation of your Cloud Foundry app to Kubernetes.
+So, that is a simple way where you were able to combine multiple information like runtime information, source information and cluster information, and do a holistic transformation of your Cloud Foundry app to Kubernetes using the Developer Sandbox for Red Hat OpenShift. Find more information about the developer sandbox [here](https://developers.redhat.com/developer-sandbox/get-started).
